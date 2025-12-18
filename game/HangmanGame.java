@@ -53,9 +53,9 @@ public class HangmanGame {
         }
 
         if (state == GameState.WON) {
-            System.out.println("\n🎉 You win! Word: " + word.getProgress());
+            System.out.println("\nYou win! Word: " + word.getProgress());
         } else {
-            System.out.println("\n💀 You lost! Word: " + word.returnWord());
+            System.out.println("\nYou lost! Word: " + word.returnWord());
         }
     }
 }

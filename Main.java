@@ -1,8 +1,8 @@
-import game.ForcaGame;
+import game.HangmanGame;
 
 public class Main {
     public static void main(String[] args) {
-        ForcaGame game = new ForcaGame();
-        game.iniciar();
+        HangmanGame game = new HangmanGame();
+        game.start();
     }
 }

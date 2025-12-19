@@ -64,6 +64,7 @@ public class HangmanGame {
             System.out.println("\nYou win! The word was: " + word.getSecretWord());
         } else {
             System.out.println("\nYou lost! The word was: " + word.getSecretWord());
+
         }
     }
 }

@@ -1,12 +1,13 @@
 package model;
 
 public class Word {
-    private String secretWord;
-    private char[] discoveredLetters;
+
+    private final String secretWord;
+    private final char[] discoveredLetters;
 
     public Word(String secretWord) {
         this.secretWord = secretWord.toUpperCase();
-        this.discoveredLetters = new char[secretWord.length()];
+        this.discoveredLetters = new char[this.secretWord.length()];
 
         for (int i = 0; i < discoveredLetters.length; i++) {
             discoveredLetters[i] = '_';
@@ -15,6 +16,7 @@ public class Word {
 
     public boolean guessLetter(char letter) {
         boolean correct = false;
+        letter = Character.toUpperCase(letter);
 
         for (int i = 0; i < secretWord.length(); i++) {
             if (secretWord.charAt(i) == letter) {
@@ -22,13 +24,28 @@ public class Word {
                 correct = true;
             }
         }
+
         return correct;
     }
 
+    public boolean guessWord(String guess) {
+    if (guess == null) return false;
+
+    boolean correct = secretWord.equals(guess.trim().toUpperCase());
+    if (correct) {
+        for (int i = 0; i < secretWord.length(); i++) {
+            discoveredLetters[i] = secretWord.charAt(i);
+        }
+    }
+    return correct;
+    }
+
+
     public boolean isComplete() {
         for (char c : discoveredLetters) {
-            if (c == '_')
+            if (c == '_') {
                 return false;
+            }
         }
         return true;
     }
@@ -37,7 +54,7 @@ public class Word {
         return new String(discoveredLetters);
     }
 
-    public String returnWord() {
+    public String getSecretWord() {
         return secretWord;
     }
 }

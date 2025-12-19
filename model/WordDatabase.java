@@ -3,42 +3,42 @@ package model;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
-public class WordDatabase {
+public class WordDatabase implements WordProvider {
 
-    private ArrayList<String> words;
-    private Random random;
+    private final List<String> words;
+    private final Random random;
 
     public WordDatabase() {
-        words = new ArrayList<>();
-        random = new Random();
+        this.words = new ArrayList<>();
+        this.random = new Random();
         loadWords();
     }
 
     private void loadWords() {
-        try {
-            File files = new File("resources/words.txt");
-            Scanner scanner = new Scanner(files);
+        File file = new File("resources/words.txt");
 
+        try (Scanner scanner = new Scanner(file)) {
             while (scanner.hasNextLine()) {
                 String word = scanner.nextLine().trim();
-
                 if (!word.isEmpty()) {
                     words.add(word.toUpperCase());
                 }
             }
-
-            scanner.close();
-
         } catch (FileNotFoundException e) {
-            System.out.println("Word file not found!");
-            System.exit(1);
+            throw new IllegalStateException("Word file not found.", e);
+        }
+
+        if (words.isEmpty()) {
+            throw new IllegalStateException("Word list is empty.");
         }
     }
 
-    public String drawWords() {
+    @Override
+    public String getRandomWord() {
         int index = random.nextInt(words.size());
         return words.get(index);
     }

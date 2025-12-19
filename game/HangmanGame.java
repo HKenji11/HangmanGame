@@ -1,29 +1,30 @@
 package game;
 
+import exception.InvalidLetterException;
+import model.Player;
 import model.Word;
 import model.WordDatabase;
-import model.Player;
+import model.WordProvider;
 import util.InputUtils;
-import exception.InvalidLetterException;
 
 public class HangmanGame {
 
-    private Word word;
-    private Player player;
+    private final Word word;
+    private final Player player;
     private GameState state;
-    private WordDatabase wordDatabase;
+    private final WordProvider wordProvider;
 
     public HangmanGame() {
-        wordDatabase = new WordDatabase();
+        this.wordProvider = new WordDatabase();
 
-        String drawnWord = wordDatabase.drawWords();
+        String randomWord = wordProvider.getRandomWord();
 
-        word = new Word(drawnWord);
-        player = new Player(6);
-        state = GameState.IN_PROGRESS;
+        this.word = new Word(randomWord);
+        this.player = new Player(8);
+        this.state = GameState.IN_PROGRESS;
     }
 
-    public void startGame() {
+    public void start() {
         System.out.println("=== HANGMAN GAME ===");
 
         while (state == GameState.IN_PROGRESS) {
@@ -33,18 +34,29 @@ public class HangmanGame {
             try {
                 char letter = InputUtils.readLetter();
 
-                if (player.alreadyGuessed(letter)) {
-                    System.out.println("You've tried this letter before!");
+                if (player.hasGuessed(letter)) {
+                    System.out.println("You've already guessed this letter.");
                     continue;
                 }
 
                 boolean correct = word.guessLetter(letter);
-                player.registerAttempt(letter, correct);
+                player.registerGuess(letter, correct);
 
                 if (word.isComplete()) {
                     state = GameState.WON;
-                } else if (player.getRemainingAttempts() == 0) {
-                    state = GameState.LOST;
+                    break;
+                }
+
+                if (player.getRemainingAttempts() == 0) {
+                    // ✅ Last chance: guess the full word
+                    System.out.println("\nNo attempts left!");
+                    String fullGuess = InputUtils.readWord();
+
+                    if (word.guessWord(fullGuess)) {
+                        state = GameState.WON;
+                    } else {
+                        state = GameState.LOST;
+                    }
                 }
 
             } catch (InvalidLetterException e) {
@@ -53,9 +65,9 @@ public class HangmanGame {
         }
 
         if (state == GameState.WON) {
-            System.out.println("\nYou win! Word: " + word.getProgress());
+            System.out.println("\nYou win! The word was: " + word.getSecretWord());
         } else {
-            System.out.println("\nYou lost! Word: " + word.returnWord());
+            System.out.println("\nYou lost! The word was: " + word.getSecretWord());
         }
     }
 }

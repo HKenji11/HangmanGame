@@ -1,33 +1,29 @@
 package model;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
-public class Player extends AbstractPlayer {
+public class Player {
+    private int remainingAttempts;
+    private Map<Character, Boolean> guessedLetters;
 
-    private final Set<Character> guessedLetters;
-
-    public Player(int maxAttempts) {
-        super(maxAttempts);
-        this.guessedLetters = new HashSet<>();
+    public Player(int attempts) {
+        this.remainingAttempts = attempts;
+        this.guessedLetters = new HashMap<>();
     }
 
     public boolean hasGuessed(char letter) {
-        letter = Character.toUpperCase(letter);
-        return guessedLetters.contains(letter);
+        return guessedLetters.containsKey(letter);
     }
 
     public void registerGuess(char letter, boolean correct) {
-        letter = Character.toUpperCase(letter);
-        guessedLetters.add(letter);
-
+        guessedLetters.put(letter, correct);
         if (!correct) {
-            loseAttempt();
+            remainingAttempts--;
         }
     }
 
-    public Set<Character> getGuessedLetters() {
-        return Collections.unmodifiableSet(guessedLetters);
+    public int getRemainingAttempts() {
+        return remainingAttempts;
     }
 }

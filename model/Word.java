@@ -1,9 +1,8 @@
 package model;
 
 public class Word {
-
-    private final String secretWord;
-    private final char[] discoveredLetters;
+    private String secretWord;
+    private char[] discoveredLetters;
 
     public Word(String secretWord) {
         this.secretWord = secretWord.toUpperCase();
@@ -16,7 +15,6 @@ public class Word {
 
     public boolean guessLetter(char letter) {
         boolean correct = false;
-        letter = Character.toUpperCase(letter);
 
         for (int i = 0; i < secretWord.length(); i++) {
             if (secretWord.charAt(i) == letter) {
@@ -24,18 +22,13 @@ public class Word {
                 correct = true;
             }
         }
-
         return correct;
-    }
-
-    public boolean guessWord(String guess) {
-        if (guess == null) return false;
-        return secretWord.equals(guess.trim().toUpperCase());
     }
 
     public boolean isComplete() {
         for (char c : discoveredLetters) {
-            if (c == '_') return false;
+            if (c == '_')
+                return false;
         }
         return true;
     }
@@ -44,7 +37,7 @@ public class Word {
         return new String(discoveredLetters);
     }
 
-    public String getSecretWord() {
+    public String returnWord() {
         return secretWord;
     }
 }

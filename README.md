@@ -27,13 +27,13 @@ The game runs in the terminal and follows the **classic Hangman rules**, includi
 ## Project Structure
 
 HangmanGame/
-├── exception/      # Custom exceptions
-├── game/           # Game logic and state
-├── model/          # Domain model (Player, Word, WordProvider, etc.)
-├── util/           # Input utilities
-├── resources/      # Text files (word list)
-├── Main.java       # Application entry point
-└── README.md
+- exception/      # Custom exceptions
+- game/           # Game logic and state
+- model/          # Domain model (Player, Word, WordProvider, etc.)
+- util/           # Input utilities
+- resources/      # Text files (word list)
+- Main.java       # Application entry point
+- README.md
 
 ---
 
